@@ -1,0 +1,8 @@
+jupyter
+matplotlib
+nbconvert
+numpy
+parallel_map
+parsable
+pytest
+scipy

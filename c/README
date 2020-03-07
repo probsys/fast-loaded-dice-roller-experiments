@@ -1,0 +1,17 @@
+This software assumes a standard gcc toolchain.
+
+Please also ensure that gsl is installed: https://www.gnu.org/software/gsl/
+
+$ make all
+
+    Builds the library, creating the ./mainc and ./mainc.opt binaries
+    and runs a small test.
+
+    Run ./main.out.opt for usage.
+
+$ make test
+
+    Runs each sampler on the distributions in the directory d/ (~20 seconds).
+
+    The total runtime needed to generate one million samples and the number of
+    PRNG calls is printed to stdout.

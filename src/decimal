@@ -1,0 +1,122 @@
+/* gnubc program: decimal
+
+  This file was written by Keith Matthews and obtained from:
+  http://www.numbertheory.org/gnubc/bc_programs.html
+
+Typing period(m,n,b) where m,n,b (b>1) are positive integers,
+1<=m<n, outputs the preperiod and period digits of the base b
+expansion of  m/n, together with the period-length.
+*/
+
+/*  gcd(m,n) for non--negative integers m and n */
+/* Euclid's division algorithm is used. */
+
+define gcd(m,n){
+	auto a,b,c
+	if(n==0)return(m)
+	a=m
+        b=n
+        c=a%b
+        while(c>0){
+		a=b
+                b=c
+                c=a%b
+        }
+	return(b)
+}   
+
+/*
+If m,n,b (b>1) are positive integers, 1<=m<n, the preperiod and period digits
+of the base b expansion of  m/n are outputted, together with the period-length.
+*/
+
+define period(m,n,b){
+	auto a[],g,i,p,j,c[]
+	
+	g=gcd(m,n)
+	m=m/g;n=n/g
+	if(m>=n){"m>=n:"; return(0)}
+	if(m<1){"m<1:"; return(0)}
+	if(n<1){"n<1:"; return(0)}
+	if(b<=1){"b<=1:"; return(0)}
+	i=0
+        c[0]=m
+        flag=0
+	while(flag==0){
+		p=b*c[i]
+                i=i+1
+		c[i]=p%n
+                a[i]=p/n
+		/*print "a[",i,"]=",a[i],"\n" /* the i-th digit */
+                if(i==1000){
+                   print "limit of 1000 digits produced\n"
+                   return(0)
+                }
+                for(j=0;j<i;j++){
+		   if(c[i]==c[j]){
+                      flag=1
+                      break
+                   }
+                }
+	}
+#print "the expansion of ",m,"/",n," to base ",b,"\n"
+if(j){
+    print "preperiod digits: "
+    for(k=1;k<=j;k++){
+       print a[k],","
+    }
+    print "\n"
+}
+print "period digits: "
+for(k=j+1;k<=i;k++){
+   print a[k]
+   if(k<i){
+      print ","
+   }
+}
+print "\n"
+t=i-j
+"period-length = ";return(t)
+}
+
+
+/* This outputs the integer a[k-1]b^(k-1)+...+a[0] */
+define convert(a[],k,b){
+auto i,sum,c
+sum=0
+c=1
+for(i=0;i<k;i++){
+   sum=sum+a[i]*c
+   c=c*b
+}
+return(sum)
+}
+
+/* the base b decimal .pre[] (k termed preperiod ) per[] (r termed period)
+   is converted to a rational number z using the formula 
+   z = ((b^r - 1)x+ y)/b^k(b^r - 1).
+   If k=0,x=0.
+ */
+define d2rnew(pre[],per[],k,r,b){
+auto i,j,t,num,denom,x,y
+   t=b^r-1
+   x=convert(pre[],k,b)
+   y=convert(per[],r,b)
+   num=x*t+y
+   denom=(b^k)*t
+   g=gcd(num,denom)
+   num=num/g
+   denom=denom/g
+      print "rational represented by ."
+      for(i=k-1;i>=0;i--){
+        print pre[i]
+      }
+      for(j=r-1;j>=0;j--){
+        print per[j]
+      }
+      for(j=r-1;j>=0;j--){
+        print per[j]
+      }
+      print "... = ",num,"/",denom,"\n"
+   return
+}

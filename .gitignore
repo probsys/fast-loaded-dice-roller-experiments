@@ -1,0 +1,10 @@
+*.out
+*.opt
+*.egg-info
+
+.cache
+__pycache__
+build
+dist
+src/version.py
+VERSION

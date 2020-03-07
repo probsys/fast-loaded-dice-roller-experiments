@@ -1,0 +1,3 @@
+#!/bin/sh
+d=$(dirname $(realpath "${0}"))
+echo "scale = 0; period(${1}, ${2}, 2)" | bc -q -l ${d}/decimal
